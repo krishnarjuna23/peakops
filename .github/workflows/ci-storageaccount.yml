@@ -16,9 +16,12 @@ jobs:
 
     - name: Copy Bicep templates and parameters to staging directory
       run: |
-        mkdir -p ${{ github.workspace }}/artifact
-        cp -r templates/parameters/DEV/storageaccount/* ${{ github.workspace }}/artifact/
-
+        mkdir -p ${{ github.workspace }}/artifact/templates/storageaccount
+        cp templates/storageaccount/* ${{ github.workspace }}/artifact/templates/storageaccount/
+        
+        mkdir -p ${{ github.workspace }}/artifact/templates/parameters/${{ github.event.inputs.environment }}/storageaccount
+              
+              
     - name: Upload Bicep artifacts
       uses: actions/upload-artifact@v4
       with:
