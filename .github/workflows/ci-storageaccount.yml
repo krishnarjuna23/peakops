@@ -2,6 +2,10 @@ name: CI - Storage Account
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -19,7 +23,8 @@ jobs:
         mkdir -p ${{ github.workspace }}/artifact/templates/storageaccount
         cp templates/storageaccount/* ${{ github.workspace }}/artifact/templates/storageaccount/
         
-        mkdir -p ${{ github.workspace }}/artifact/templates/parameters/${{ github.event.inputs.environment }}/storageaccount
+        mkdir -p ${{ github.workspace }}/artifact/templates/parameters
+        cp -r templates/parameters/* ${{ github.workspace }}/artifact/templates/parameters/
               
               
     - name: Upload Bicep artifacts
