@@ -1,12 +1,26 @@
 name: CD - Storage Account
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'templates/storageaccount/**'
-      - 'templates/parameters/**'
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      resourceGroupName:
+        required: true
+        type: string
+      location:
+        required: true
+        type: string
+      azureClientId:
+        required: true
+        type: string
+      azureTenantId:
+        required: true
+        type: string
+      azureSubscriptionId:
+        required: true
+        type: string
 
 permissions:
   id-token: write
