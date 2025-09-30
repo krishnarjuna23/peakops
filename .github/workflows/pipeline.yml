@@ -27,7 +27,9 @@ jobs:
     uses: ./.github/workflows/cd-storageaccount.yml
     with:
       environment: ${{ inputs.environment }}
-      resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
-      location: ${{ secrets.LOCATION }}
-      azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
-      azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+    secrets:
+      RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+      LOCATION: ${{ secrets.LOCATION }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
