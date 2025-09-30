@@ -60,10 +60,31 @@ jobs:
     #       --parameters @artifact/parameters/${{ inputs.environment }}/resourcegroup/resourcegroup.bicepparam \
     #       --name ${{ inputs.environment }}-${{ github.run_id }}
 
+    # - name: Deploy Storage Account Bicep file
+    #   run: |
+    #     az deployment group create \
+    #       --resource-group ${{ secrets.RESOURCE_GROUP }} \
+    #       --template-file artifact/templates/storageaccount.bicep \
+    #       --parameters @${{ github.workspace }}/artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam
+    #       --name ${{ inputs.environment }}-${{ github.run_id }}
+
+    - name: Validate parameter file exists
+      run: |
+        PARAM_FILE="artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam"
+        if [ ! -f "$PARAM_FILE" ]; then
+          echo "ERROR: Parameter file not found: $PARAM_FILE"
+          exit 1
+        fi
+        
     - name: Deploy Storage Account Bicep file
       run: |
-        az deployment group create \
-          --resource-group ${{ secrets.RESOURCE_GROUP }} \
-          --template-file artifact/templates/storageaccount.bicep \
-          --parameters @${{ github.workspace }}/artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam
-          --name ${{ inputs.environment }}-${{ github.run_id }}
+       az deployment group create \
+         --resource-group ${{ secrets.RESOURCE_GROUP }} \
+         --template-file artifact/templates/storageaccount.bicep \
+         --parameters @artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam \
+         --name ${{ inputs.environment }}-${{ github.run_id }}
+        
+
+
+
+          
