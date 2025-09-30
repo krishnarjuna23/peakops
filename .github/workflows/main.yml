@@ -24,7 +24,4 @@ jobs:
 
     - name: Deploy Bicep file to Resource Group
       run: |
-        az deployment group create \
-          --resource-group <RESOURCE_GROUP_NAME> \
-          --template-file ./main.bicep \
-          --parameters ./parameters.json
+        az deployment group create --resource-group sample-demo-rg --template-file ./stoarge-account.bicep
