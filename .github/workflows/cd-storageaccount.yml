@@ -52,13 +52,13 @@ jobs:
           echo "Resource group ${{ secrets.RESOURCE_GROUP }} already exists."
         fi
 
-    - name: Deploy Resource Group Bicep file
-      run: |
-        az deployment sub create \
-          --location ${{ secrets.LOCATION }} \
-          --template-file artifact/resource-group.bicep \
-          --parameters @artifact/parameters/${{ inputs.environment }}/resourcegroup/resourcegroup.bicepparam \
-          --name ${{ inputs.environment }}-${{ github.run_id }}
+    # - name: Deploy Resource Group Bicep file
+    #   run: |
+    #     az deployment sub create \
+    #       --location ${{ secrets.LOCATION }} \
+    #       --template-file artifact/resource-group.bicep \
+    #       --parameters @artifact/parameters/${{ inputs.environment }}/resourcegroup/resourcegroup.bicepparam \
+    #       --name ${{ inputs.environment }}-${{ github.run_id }}
 
     - name: Deploy Storage Account Bicep file
       run: |
