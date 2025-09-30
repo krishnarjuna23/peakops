@@ -1,4 +1,3 @@
-using '../../../templates/storageaccount.bicep'
+using '../../storageaccount/storageaccount.bicep'
 
-
-param storageAccounts_apps_name = 'sampledevstorageaccount'
+param storageAccounts_apps_name = 'sampleajostorageaccount'
