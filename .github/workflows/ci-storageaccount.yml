@@ -1,10 +1,7 @@
 name: CI - Storage Account
 
 on:
-  pull_request:
-    paths:
-      - 'templates/storageaccount/**'
-      - 'templates/parameters/**'
+  workflow_call:
 
 jobs:
   build:
