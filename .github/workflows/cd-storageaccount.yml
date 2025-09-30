@@ -6,21 +6,17 @@ on:
       environment:
         required: true
         type: string
-      resourceGroupName:
+    secrets:
+      RESOURCE_GROUP:
         required: true
-        type: string
-      location:
+      LOCATION:
         required: true
-        type: string
-      azureClientId:
+      AZURE_CLIENT_ID:
         required: true
-        type: string
-      azureTenantId:
+      AZURE_TENANT_ID:
         required: true
-        type: string
-      azureSubscriptionId:
+      AZURE_SUBSCRIPTION_ID:
         required: true
-        type: string
 
 permissions:
   id-token: write
@@ -61,13 +57,13 @@ jobs:
         az deployment sub create \
           --location ${{ secrets.LOCATION }} \
           --template-file artifact/resource-group.bicep \
-          --parameters @artifact/parameters/${{ secrets.ENVIRONMENT }}/resourcegroup/resourcegroup.bicepparam \
-          --name ${{ secrets.ENVIRONMENT }}-${{ github.run_id }}
+          --parameters @artifact/parameters/${{ inputs.environment }}/resourcegroup/resourcegroup.bicepparam \
+          --name ${{ inputs.environment }}-${{ github.run_id }}
 
     - name: Deploy Storage Account Bicep file
       run: |
         az deployment group create \
           --resource-group ${{ secrets.RESOURCE_GROUP }} \
           --template-file artifact/storageaccount.bicep \
-          --parameters @artifact/parameters/${{ secrets.ENVIRONMENT }}/storageaccount/storageaccount.bicepparam \
-          --name ${{ secrets.ENVIRONMENT }}-${{ github.run_id }}
+          --parameters @artifact/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam \
+          --name ${{ inputs.environment }}-${{ github.run_id }}
