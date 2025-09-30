@@ -5,7 +5,6 @@ resource storageAccounts_apps_name_resource 'Microsoft.Storage/storageAccounts@2
   location: 'canadacentral'
   sku: {
     name: 'Standard_LRS'
-    tier: 'Standard'
   }
   kind: 'StorageV2'
   properties: {
