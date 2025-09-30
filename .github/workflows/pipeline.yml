@@ -16,6 +16,12 @@ on:
           - UAT
           - PROD
 # nosnfo
+
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     name: Build Bicep Artifacts
