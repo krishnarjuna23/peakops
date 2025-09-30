@@ -81,7 +81,8 @@ jobs:
         az deployment group create \
           --resource-group ${{ secrets.RESOURCE_GROUP }} \
           --template-file artifact/templates/storageaccount/storageaccount.bicep \
-          --parameters @$PARAM_FILE \
+          --parameters @artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam \
+          --name ${{ inputs.environment }}-${{ github.run_id }}
 
 
 
