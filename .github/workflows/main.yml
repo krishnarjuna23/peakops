@@ -15,7 +15,7 @@ on:
           - QA
           - UAT
           - PROD
-
+# nosnfo
 jobs:
   build:
     name: Build Bicep Artifacts
