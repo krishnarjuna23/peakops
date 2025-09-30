@@ -80,7 +80,7 @@ jobs:
       run: |
         az deployment group create \
           --resource-group ${{ secrets.RESOURCE_GROUP }} \
-          --parameters-file artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam
+          --parameters-file artifact/templates/parameters/${{ inputs.environment }}/storageaccount/storageaccount.bicepparam \
           --name ${{ inputs.environment }}-${{ github.run_id }}
 
 
