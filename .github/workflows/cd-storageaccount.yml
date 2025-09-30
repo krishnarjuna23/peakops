@@ -1,0 +1,59 @@
+name: CD - Storage Account
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'templates/storageaccount/**'
+      - 'templates/parameters/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Download Bicep artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: Bicep-Artifact
+        path: artifact
+
+    - name: Login to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Check and create resource group if not exists
+      run: |
+        RG_EXISTS=$(az group exists --name ${{ secrets.RESOURCE_GROUP }})
+        if [ "$RG_EXISTS" == "false" ]; then
+          echo "Creating resource group ${{ secrets.RESOURCE_GROUP }}..."
+          az group create --name ${{ secrets.RESOURCE_GROUP }} --location ${{ secrets.LOCATION }}
+        else
+          echo "Resource group ${{ secrets.RESOURCE_GROUP }} already exists."
+        fi
+
+    - name: Deploy Resource Group Bicep file
+      run: |
+        az deployment sub create \
+          --location ${{ secrets.LOCATION }} \
+          --template-file artifact/resource-group.bicep \
+          --parameters @artifact/parameters/${{ secrets.ENVIRONMENT }}/resourcegroup/resourcegroup.bicepparam \
+          --name ${{ secrets.ENVIRONMENT }}-${{ github.run_id }}
+
+    - name: Deploy Storage Account Bicep file
+      run: |
+        az deployment group create \
+          --resource-group ${{ secrets.RESOURCE_GROUP }} \
+          --template-file artifact/storageaccount.bicep \
+          --parameters @artifact/parameters/${{ secrets.ENVIRONMENT }}/storageaccount/storageaccount.bicepparam \
+          --name ${{ secrets.ENVIRONMENT }}-${{ github.run_id }}

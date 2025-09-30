@@ -1,0 +1,34 @@
+name: Storage Account Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'POC'
+        type: choice
+        options:
+          - POC
+          - DEV
+          - SIT
+          - QA
+          - UAT
+          - PROD
+
+jobs:
+  build:
+    name: Build Bicep Artifacts
+    uses: ./.github/workflows/ci-storageaccount.yml
+
+  deploy:
+    name: Deploy Storage Account
+    needs: build
+    uses: ./.github/workflows/cd-storageaccount.yml
+    with:
+      environment: ${{ inputs.environment }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
+      location: ${{ secrets.LOCATION }}
+      azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
+      azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+      azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
